@@ -15,6 +15,14 @@ ecosystem.
 
 Please take a look at our [Getting Started] guide.
 
+## Building, generating and testing
+
+Toolchain pinning, the policy for committed bpf2go output, and which tests
+run without privileges are documented in [docs/BUILD.md](docs/BUILD.md).
+The short version for a clean checkout: `make container-unit-test` builds
+the library and runs the unprivileged test tier in a pinned, capability-less
+container; `sudo` is never required.
+
 [Contributions](https://ebpf-go.dev/contributing) are highly encouraged, as they highlight certain use cases of
 eBPF and the library, and help shape the future of the project.
 

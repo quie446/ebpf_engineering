@@ -1,0 +1,29 @@
+# Pinned toolchain versions, consumed by scripts/check-tools.sh.
+#
+# Go-side tools (bpf2go, stringer, gentypes, staticcheck) are NOT listed
+# here: they are pinned reproducibly via the `tool` block in go.mod and
+# run through `go tool <name>`. Do not install a "floating" bpf2go via
+# `go install` for generating code in this repo.
+#
+# The C toolchain below only matters for (re)generating committed artifacts
+# (*.o / *_bpfel.go / *_bpfeb.go / testdata ELFs). Plain `go test -short`
+# and `go build` do not need it.
+
+# Used for compiling all testdata and example BPF objects.
+# Keep in sync with testdata/docker/Dockerfile (clang-22 packages).
+CLANG_MAJOR_VERSION=22
+
+# llvm-strip must come from the same LLVM release as clang.
+LLVM_STRIP_MAJOR_VERSION=22
+
+# Only required for linking testdata/linked{1,2} into testdata/linked.
+# Checked loosely: major >= this is accepted.
+BPFTOOL_MIN_MAJOR_VERSION=7
+
+# Go is declared in go.mod (`go 1.25.0`). The CI and the clean-container
+# target use the matching major.minor image: golang:1.25-bookworm.
+GO_DOCKER_IMAGE=golang:1.25-bookworm
+
+# Full toolchain image used for regenerating artifacts (clang-14/17/22,
+# bpftool, libbpf headers). Pinned by immutable tag, see testdata/docker/.
+ELF_BUILDER_IMAGE=ghcr.io/cilium/ebpf-builder:1777990914
