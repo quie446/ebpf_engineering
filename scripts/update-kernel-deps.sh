@@ -2,13 +2,11 @@
 
 set -euo pipefail
 
-# Extract kernel version from CI workflow file
-kernel_version=$(awk -F': ' '/CI_MAX_KERNEL_VERSION:/ {gsub(/['\''"]/, "", $2); print $2}' .github/workflows/ci.yml)
+# Pinned versions live in scripts/versions.env.
+# shellcheck source=versions.env
+source "$(dirname "${BASH_SOURCE[0]}")/versions.env"
 
-if [ -z "$kernel_version" ]; then
-	echo "Error: Could not extract CI_MAX_KERNEL_VERSION from .github/workflows/ci.yml" >&2
-	exit 1
-fi
+kernel_version="$CI_MAX_KERNEL_VERSION"
 
 echo "Using kernel version: $kernel_version"
 

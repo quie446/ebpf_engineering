@@ -2,13 +2,11 @@
 
 set -euo pipefail
 
-# Extract EFW version from CI workflow file
-efw_version=$(awk -F': ' '/CI_MAX_EFW_VERSION:/ {gsub(/['\''"]/, "", $2); print $2}' .github/workflows/ci.yml)
+# Pinned versions live in scripts/versions.env.
+# shellcheck source=versions.env
+source "$(dirname "${BASH_SOURCE[0]}")/versions.env"
 
-if [ -z "$efw_version" ]; then
-	echo "Error: Could not extract CI_MAX_EFW_VERSION from .github/workflows/ci.yml" >&2
-	exit 1
-fi
+efw_version="$CI_MAX_EFW_VERSION"
 
 echo "Using EFW version: $efw_version"
 
